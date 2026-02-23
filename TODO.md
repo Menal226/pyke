@@ -171,7 +171,7 @@
 - [ ] **Playwright QA screenshots** - Visual regression testing for docs
 - [ ] **Load testing** - Verify rate limiting under high concurrency
 - [ ] **Chaos engineering** - Test resilience to API failures
-- [ ] **Compatibility testing** - Verify across Python 3.9-3.13
+- [ ] **Compatibility testing** - Verify across Python 3.10-3.13
 - [ ] **Memory profiling** - Ensure no leaks in long-running processes
 - [ ] **Security audits** - Annual third-party security review
 
