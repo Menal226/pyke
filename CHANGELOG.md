@@ -30,7 +30,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Changed `print_url` and `print_rate_limit` to default to False in `main.py`
-- Changed self.api_key to self.\_api_key in `_base_client.py`
 - Changed examples link to main instead of master in `README.md`
 
 ### Fixed
@@ -44,9 +43,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed PH and TH enums in `region.py` in favour of SG as they all route to the sg2 server
 - Removed API key validation in `_base_client.py`
 
-### Deprecated
-
 ### Security
+
+- Changed self.api_key to self.\_api_key in `_base_client.py`
 
 ---
 
