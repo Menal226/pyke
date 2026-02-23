@@ -93,8 +93,6 @@ class _BaseApiClient:  # pyright: ignore[reportUnusedClass]
             raise exceptions.RequestTimeout(
                 f"Request timed out after {self.timeout} seconds", 408
             )
-        except httpx.RequestError as exc:
-            raise exceptions.RequestTimeout(str(exc), 408)
 
         if self.print_rate_limit:
             self.count = self._get_count(response)
