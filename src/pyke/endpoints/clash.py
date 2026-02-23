@@ -9,11 +9,11 @@ class ClashEndpoint:
     def __init__(self, client: _BaseApiClient):
         self._client = client
 
-    def by_puuid(self, region: Region, puuid: str) -> list[dict[Any, Any]]:
+    async def by_puuid(self, region: Region, puuid: str) -> list[dict[Any, Any]]:
         """# Get players by puuid
 
         **Example:**  
-            `players = api.clash.by_puuid(Region.EUW, "some puuid")`
+            `players = await api.clash.by_puuid(Region.EUW, "some puuid")`
 
         **Args:**  
             `region (Region)` [Region](/pyke/pyke.html#Region) to execute against.  
@@ -24,15 +24,15 @@ class ClashEndpoint:
         """  # fmt: skip
 
         path = f"/lol/clash/v1/players/by-puuid/{puuid}"
-        data = self._client._region_request(region=region, path=path)
+        data = await self._client._region_request(region=region, path=path)
 
         return data
 
-    def by_team_id(self, region: Region, team_id: str) -> dict[Any, Any]:
+    async def by_team_id(self, region: Region, team_id: str) -> dict[Any, Any]:
         """# Get team by ID
 
         **Example:**  
-            `team = api.clash.by_team_id(Region.EUW, "some team id")`
+            `team = await api.clash.by_team_id(Region.EUW, "some team id")`
 
         **Args:**  
             `region (Region)` [Region](/pyke/pyke.html#Region) to execute against.  
@@ -43,15 +43,15 @@ class ClashEndpoint:
         """  # fmt: skip
 
         path = f"/lol/clash/v1/teams/{team_id}"
-        data = self._client._region_request(region=region, path=path)
+        data = await self._client._region_request(region=region, path=path)
 
         return data
 
-    def tournaments(self, region: Region) -> list[dict[Any, Any]]:
+    async def tournaments(self, region: Region) -> list[dict[Any, Any]]:
         """# Get all active or upcoming tournaments
 
         **Example:**  
-            `tournaments = api.clash.tournaments(Region.EUW)`
+            `tournaments = await api.clash.tournaments(Region.EUW)`
 
         **Args:**  
             `region (Region)` [Region](/pyke/pyke.html#Region) to execute against.  
@@ -61,15 +61,17 @@ class ClashEndpoint:
         """  # fmt: skip
 
         path = "/lol/clash/v1/tournaments"
-        data = self._client._region_request(region=region, path=path)
+        data = await self._client._region_request(region=region, path=path)
 
         return data
 
-    def tournament_by_team_id(self, region: Region, team_id: str) -> dict[Any, Any]:
+    async def tournament_by_team_id(
+        self, region: Region, team_id: str
+    ) -> dict[Any, Any]:
         """# Get tournament by team ID
 
         **Example:**  
-            `tournament = api.clash.tournament_by_team_id(Region.EUW, "some team id")`
+            `tournament = await api.clash.tournament_by_team_id(Region.EUW, "some team id")`
 
         **Args:**  
             `region (Region)` [Region](/pyke/pyke.html#Region) to execute against.  
@@ -80,17 +82,17 @@ class ClashEndpoint:
         """  # fmt: skip
 
         path = f"/lol/clash/v1/tournaments/by-team/{team_id}"
-        data = self._client._region_request(region=region, path=path)
+        data = await self._client._region_request(region=region, path=path)
 
         return data
 
-    def tournament_by_tournament_id(
+    async def tournament_by_tournament_id(
         self, region: Region, tournament_id: int
     ) -> dict[Any, Any]:
         """# Get tournament by ID
 
         **Example:**  
-            `tournament = api.clash.tournament_by_tournament_id(Region.EUW, 12345)`
+            `tournament = await api.clash.tournament_by_tournament_id(Region.EUW, 12345)`
 
         **Args:**  
             `region (Region)` [Region](/pyke/pyke.html#Region) to execute against.  
@@ -101,6 +103,6 @@ class ClashEndpoint:
         """  # fmt: skip
 
         path = f"/lol/clash/v1/tournaments/{tournament_id}"
-        data = self._client._region_request(region=region, path=path)
+        data = await self._client._region_request(region=region, path=path)
 
         return data

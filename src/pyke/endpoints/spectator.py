@@ -9,11 +9,11 @@ class SpectatorEndpoint:
     def __init__(self, client: _BaseApiClient):
         self._client = client
 
-    def by_puuid(self, region: Region, puuid: str) -> dict[Any, Any]:
+    async def by_puuid(self, region: Region, puuid: str) -> dict[Any, Any]:
         """# Get current game information for the given puuid
 
         **Example:**  
-            `current_game = api.spectator.by_puuid(Region.EUW, "some puuid")`
+            `current_game = await api.spectator.by_puuid(Region.EUW, "some puuid")`
 
         **Args:**
             `region (Region)` [Region](/pyke/pyke.html#Region) to execute against.  
@@ -24,6 +24,6 @@ class SpectatorEndpoint:
         """  # fmt: skip
 
         path = f"/lol/spectator/v5/active-games/by-summoner/{puuid}"
-        data = self._client._region_request(region=region, path=path)
+        data = await self._client._region_request(region=region, path=path)
 
         return data

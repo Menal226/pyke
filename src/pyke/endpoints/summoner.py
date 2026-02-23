@@ -9,7 +9,7 @@ class SummonerEndpoint:
     def __init__(self, client: _BaseApiClient):
         self._client = client
 
-    def by_puuid(self, region: Region, puuid: str) -> dict[Any, Any]:
+    async def by_puuid(self, region: Region, puuid: str) -> dict[Any, Any]:
         """Get a summoner by PUUID.
 
         **Example:**  
@@ -24,6 +24,6 @@ class SummonerEndpoint:
         """  # fmt: skip
 
         path = f"/lol/summoner/v4/summoners/by-puuid/{puuid}"
-        data = self._client._region_request(region=region, path=path)
+        data = await self._client._region_request(region=region, path=path)
 
         return data

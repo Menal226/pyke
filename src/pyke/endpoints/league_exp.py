@@ -11,7 +11,7 @@ class LeagueExpEndpoint:
     def __init__(self, client: _BaseApiClient):
         self._client = client
 
-    def by_queue_tier_division(
+    async def by_queue_tier_division(
         self,
         region: Region,
         queue: Queue,
@@ -22,7 +22,7 @@ class LeagueExpEndpoint:
         """# Get all the league entries
 
         **Example:**  
-        `entries = api.league_exp.by_queue_tier_division(Region.EUW, Queue.SOLO_DUO, Tier.GOLD, Division.II)`
+        `entries = await api.league_exp.by_queue_tier_division(Region.EUW, Queue.SOLO_DUO, Tier.GOLD, Division.II)`
 
         **Args:**  
             `region (Region)` [Region](/pyke/pyke.html#Region) to execute against.  
@@ -37,6 +37,8 @@ class LeagueExpEndpoint:
 
         path = f"/lol/league-exp/v4/entries/{queue.value}/{tier.value}/{division.value}"
         params = {"page": page}
-        data = self._client._region_request(region=region, path=path, params=params)
+        data = await self._client._region_request(
+            region=region, path=path, params=params
+        )
 
         return data

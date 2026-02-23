@@ -11,11 +11,11 @@ class AccountEndpoint:
     def __init__(self, client: _BaseApiClient):
         self._client = client
 
-    def by_puuid(self, continent: Continent, puuid: str) -> dict[Any, Any]:
+    async def by_puuid(self, continent: Continent, puuid: str) -> dict[Any, Any]:
         """# Get account by puuid
 
         **Example:**  
-            `account = api.account.by_puuid(Continent.EUROPE, "some puuid")`
+            `account = await api.account.by_puuid(Continent.EUROPE, "some puuid")`
 
         **Args:**  
             `continent (Continent)` [Continent](/pyke/pyke.html#Continent) to execute against.  
@@ -26,17 +26,17 @@ class AccountEndpoint:
         """  # fmt: skip
 
         path = f"/riot/account/v1/accounts/by-puuid/{puuid}"
-        data = self._client._continent_request(continent=continent, path=path)
+        data = await self._client._continent_request(continent=continent, path=path)
 
         return data
 
-    def by_riot_id(
+    async def by_riot_id(
         self, continent: Continent, game_name: str, tag_line: str
     ) -> dict[Any, Any]:
         """# Get account by riot id
 
         **Example:**  
-            `account = api.account.by_riot_id(Continent.EUROPE, "saves", "000")`
+            `account = await api.account.by_riot_id(Continent.EUROPE, "saves", "000")`
 
         **Args:**  
             `continent (Continent)` [Continent](/pyke/pyke.html#Continent) to execute against.  
@@ -48,15 +48,15 @@ class AccountEndpoint:
         """  # fmt: skip
 
         path = f"/riot/account/v1/accounts/by-riot-id/{game_name}/{tag_line}"
-        data = self._client._continent_request(continent=continent, path=path)
+        data = await self._client._continent_request(continent=continent, path=path)
 
         return data
 
-    def region_by_puuid(self, continent: Continent, puuid: str) -> dict[Any, Any]:
+    async def region_by_puuid(self, continent: Continent, puuid: str) -> dict[Any, Any]:
         """# Get active region (lol and tft)
 
         **Example:**  
-            `region = api.account.region_by_puuid(Continent.EUROPE, "some puuid")`
+            `region = await api.account.region_by_puuid(Continent.EUROPE, "some puuid")`
 
         **Args:**  
             `continent (Continent)` [Continent](/pyke/pyke.html#Continent) to execute against.  
@@ -67,6 +67,6 @@ class AccountEndpoint:
         """  # fmt: skip
 
         path = f"/riot/account/v1/region/by-game/lol/by-puuid/{puuid}"
-        data = self._client._continent_request(continent=continent, path=path)
+        data = await self._client._continent_request(continent=continent, path=path)
 
         return data

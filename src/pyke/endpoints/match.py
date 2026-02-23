@@ -14,7 +14,7 @@ class MatchEndpoint:
     def __init__(self, client: _BaseApiClient):
         self._client = client
 
-    def match_ids_by_puuid(
+    async def match_ids_by_puuid(
         self,
         continent: Continent,
         puuid: str,
@@ -28,7 +28,7 @@ class MatchEndpoint:
         """# Get a list of match ids by puuid
 
         **Example:**  
-            `match_ids = api.match.match_ids_by_puuid(Continent.EUROPE, "some puuid")`
+            `match_ids = await api.match.match_ids_by_puuid(Continent.EUROPE, "some puuid")`
 
         **Args:**  
             `continent (Continent)` [Continent](/pyke/pyke.html#Continent) to execute against.  
@@ -60,7 +60,7 @@ class MatchEndpoint:
             "count": count,
         }
         params = {k: v for k, v in params.items() if v is not None}
-        data = self._client._continent_request(
+        data = await self._client._continent_request(
             continent=continent, path=path, params=params
         )
 
@@ -80,11 +80,11 @@ class MatchEndpoint:
 
         return data  # pyright: ignore[reportUnknownVariableType]
 
-    def by_match_id(self, continent: Continent, match_id: str) -> dict[Any, Any]:
+    async def by_match_id(self, continent: Continent, match_id: str) -> dict[Any, Any]:
         """# Get a match by match id
 
         **Example:**  
-            `match = api.match.by_match_id(Continent.EUROPE, "EUW1_1234567890")`
+            `match = await api.match.by_match_id(Continent.EUROPE, "EUW1_1234567890")`
 
         **Args:**  
             `continent (Continent)` [Continent](/pyke/pyke.html#Continent) to execute against.  
@@ -95,17 +95,17 @@ class MatchEndpoint:
         """  # fmt: skip
 
         path = f"/lol/match/v5/matches/{match_id}"
-        data = self._client._continent_request(continent=continent, path=path)
+        data = await self._client._continent_request(continent=continent, path=path)
 
         return data
 
-    def timeline_by_match_id(
+    async def timeline_by_match_id(
         self, continent: Continent, match_id: str
     ) -> dict[Any, Any]:
         """# Get a match timeline by match id
 
         **Example:**  
-            `timeline = api.match.timeline_by_match_id(Continent.EUROPE, "EUW1_1234567890")`
+            `timeline = await api.match.timeline_by_match_id(Continent.EUROPE, "EUW1_1234567890")`
 
         **Args:**  
             `continent (Continent)` [Continent](/pyke/pyke.html#Continent) to execute against.  
@@ -116,6 +116,6 @@ class MatchEndpoint:
         """  # fmt: skip
 
         path = f"/lol/match/v5/matches/{match_id}/timeline"
-        data = self._client._continent_request(continent=continent, path=path)
+        data = await self._client._continent_request(continent=continent, path=path)
 
         return data

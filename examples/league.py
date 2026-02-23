@@ -1,3 +1,4 @@
+import asyncio
 import os
 
 from dotenv import load_dotenv
@@ -6,27 +7,33 @@ from pyke import Continent, Pyke, Queue, Region
 
 load_dotenv()
 API_KEY = os.getenv("RIOT_API_KEY")
-api = Pyke(API_KEY)
 
-# Let's get all the challenger players for solo/duo queue
-challenger_leagues = api.league.challenger_leagues_by_queue(
-    region=Region.EUW, queue=Queue.SOLO_DUO
-)
 
-# Now we can print a leaderboard of the top 10 challenger players
-# With Riot id, LP, wins,losses, and win rate
-for challenger_player in challenger_leagues["entries"][0:10]:
-    account = api.account.by_puuid(
-        continent=Continent.EUROPE, puuid=challenger_player["puuid"]
-    )
+async def main() -> None:
+    async with Pyke(API_KEY) as api:
+        # Let's get all the challenger players for solo/duo queue
+        challenger_leagues = await api.league.challenger_leagues_by_queue(
+            region=Region.EUW, queue=Queue.SOLO_DUO
+        )
 
-    riot_id = f"{account['gameName']}#{account['tagLine']}"
+        # Now we can print a leaderboard of the top 10 challenger players
+        # With Riot id, LP, wins,losses, and win rate
+        for challenger_player in challenger_leagues["entries"][0:10]:
+            account = await api.account.by_puuid(
+                continent=Continent.EUROPE, puuid=challenger_player["puuid"]
+            )
 
-    wins = challenger_player["wins"]
-    losses = challenger_player["losses"]
-    total_games_played = wins + losses
-    win_rate = (wins / total_games_played) * 100
+            riot_id = f"{account['gameName']}#{account['tagLine']}"
 
-    print(
-        f"{riot_id} has {challenger_player['leaguePoints']} LP with {wins} wins and {losses} losses ({win_rate:.2f}% wr)."
-    )
+            wins = challenger_player["wins"]
+            losses = challenger_player["losses"]
+            total_games_played = wins + losses
+            win_rate = (wins / total_games_played) * 100
+
+            print(
+                f"{riot_id} has {challenger_player['leaguePoints']} LP with {wins} wins and {losses} losses ({win_rate:.2f}% wr)."
+            )
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
