@@ -1,17 +1,14 @@
 from __future__ import annotations
 
 import json
-import logging
 from typing import Any
 
-import requests
-from requests import Response
+import httpx
+from httpx import Response
 
 from . import exceptions
 from .enums.continent import Continent
 from .enums.region import Region
-
-logger = logging.getLogger(__name__)
 
 
 class _BaseApiClient:  # pyright: ignore[reportUnusedClass]
@@ -19,9 +16,7 @@ class _BaseApiClient:  # pyright: ignore[reportUnusedClass]
     REGION_BASE = "https://{region}.api.riotgames.com"
 
     def __init__(
-        self,
-        api_key: str | None,
-        timeout: int,
+        self, api_key: str | None, timeout: int, print_url: bool, print_rate_limit: bool
     ) -> None:
         if api_key is None:
             raise ValueError("API key is required, please pass a valid Riot API key.")
@@ -29,8 +24,10 @@ class _BaseApiClient:  # pyright: ignore[reportUnusedClass]
             raise ValueError("Bad API key, please pass a valid Riot API key.")
 
         self.api_key = api_key
-        self.session = requests.Session()
         self.timeout = timeout
+        self.print_url = print_url
+        self.print_rate_limit = print_rate_limit
+        self.client = httpx.AsyncClient(timeout=httpx.Timeout(self.timeout))
         self._status_code_registry = {
             400: exceptions.BadRequest("Bad request", 400),
             401: exceptions.Unauthorized("Unauthorized", 401),
@@ -53,15 +50,11 @@ class _BaseApiClient:  # pyright: ignore[reportUnusedClass]
         parts = header_value.split(":")
 
         if len(parts) < 1 or not parts[0]:
-            logger.warning(f"Invalid X-App-Rate-Limit-Count format: {header_value}")
-
             return 0
 
         try:
             return int(parts[0])
         except ValueError:
-            logger.warning(f"Non-integer count in X-App-Rate-Limit-Count: {parts[0]}")
-
             return 0
 
     def _get_limit(self, response: Response) -> int:
@@ -73,21 +66,12 @@ class _BaseApiClient:  # pyright: ignore[reportUnusedClass]
         parts = header_value.split(":")
 
         if len(parts) < 1 or not parts[0]:
-            logger.warning(f"Invalid X-App-Rate-Limit format: {header_value}")
-
             return 100
 
         try:
             return int(parts[0])
         except ValueError:
-            logger.warning(f"Non-integer limit in X-App-Rate-Limit: {parts[0]}")
-
             return 100
-
-    def _log_rate_limit(self, response: Response) -> None:
-        count = self._get_count(response)
-        limit = self._get_limit(response)
-        logger.info(f"Rate limit: ({count}/{limit})")
 
     def _response_json(self, response: Response) -> Any:
         try:
@@ -97,26 +81,31 @@ class _BaseApiClient:  # pyright: ignore[reportUnusedClass]
         except ValueError:
             raise exceptions.InternalServerError("Empty JSON response", 500)
 
-    def _get(self, url: str, params: dict[Any, Any] | None = None) -> Any:
-        logging.info(url)
+    async def _get(self, url: str, params: dict[Any, Any] | None = None) -> Any:
+        if self.print_url:
+            print(f"URL:        {url}")
+
         headers = {"X-Riot-Token": self.api_key}
 
         try:
-            response = self.session.get(
-                url, headers=headers, params=params, timeout=self.timeout
-            )
-        except requests.exceptions.Timeout:
+            response = await self.client.get(url, headers=headers, params=params)
+        except httpx.TimeoutException:
             raise exceptions.RequestTimeout(
                 f"Request timed out after {self.timeout} seconds", 408
             )
+        except httpx.RequestError as exc:
+            raise exceptions.RequestTimeout(str(exc), 408)
 
-        self._log_rate_limit(response)
+        if self.print_rate_limit:
+            self.count = self._get_count(response)
+            self.limit = self._get_limit(response)
+            print(f"Rate limit: ({self.count}/{self.limit})")
+
         code = response.status_code
 
         if code == 200:
             return self._response_json(response)
-
-        if code == 429:
+        elif code == 429:
             raise exceptions.RateLimitExceeded("Rate limit exceeded", code)
 
         raise self._status_code_registry.get(
@@ -126,16 +115,19 @@ class _BaseApiClient:  # pyright: ignore[reportUnusedClass]
             ),
         )
 
-    def _continent_request(
+    async def _continent_request(
         self, continent: Continent, path: str, params: dict[Any, Any] | None = None
     ) -> Any:
         url = f"{self.CONTINENT_BASE.format(continent=continent.value)}{path}"
 
-        return self._get(url, params)
+        return await self._get(url, params)
 
-    def _region_request(
+    async def _region_request(
         self, region: Region, path: str, params: dict[Any, Any] | None = None
     ) -> Any:
         url = f"{self.REGION_BASE.format(region=region.value)}{path}"
 
-        return self._get(url, params)
+        return await self._get(url, params)
+
+    async def aclose(self) -> None:
+        await self.client.aclose()

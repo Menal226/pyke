@@ -1,23 +1,20 @@
 from __future__ import annotations
 
 import json
-import logging
 from typing import Any
 
-import requests
-from requests import Response
+import httpx
+from httpx import Response
 
 from . import exceptions
-
-logger = logging.getLogger(__name__)
 
 
 class _BaseDataDragonClient:  # pyright: ignore[reportUnusedClass]
     DATA_DRAGON_BASE = "https://ddragon.leagueoflegends.com"
 
     def __init__(self, version: str | None, timeout: int) -> None:
-        self.session = requests.Session()
         self.timeout = timeout
+        self.client = httpx.Client(timeout=self.timeout)
 
         if version is None:
             self.version = self._get_latest_version()
@@ -58,11 +55,9 @@ class _BaseDataDragonClient:  # pyright: ignore[reportUnusedClass]
             raise exceptions.InternalServerError("Empty JSON response", 500)
 
     def _get(self, url: str) -> Any:
-        logger.info(url)
-
         try:
-            response = self.session.get(url, timeout=self.timeout)
-        except requests.exceptions.Timeout:
+            response = self.client.get(url)
+        except httpx.TimeoutException:
             raise exceptions.RequestTimeout(
                 f"Request timed out after {self.timeout} seconds", 408
             )

@@ -21,6 +21,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [v3.1.0] - 2026-02-23
+
+### Added
+
+- Added print_url and print_rate_limit options to Pyke()
+
+### Removed
+
+- Removed logging
+
+---
+
 ## [v3.0.0] - 2026-02-08
 
 ### Removed

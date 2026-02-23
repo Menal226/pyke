@@ -1,15 +1,8 @@
-import logging
 import os
 
 from caseconverter import camelcase, snakecase, titlecase  # type: ignore
 
 from pyke import DataDragon
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    datefmt="%H:%M:%S",
-)
 
 ddragon = DataDragon()
 version = ddragon._client.version
