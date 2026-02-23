@@ -31,6 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fixed count param in masteries_by_puuid_top in `champion_mastery.py` to default to 3.
+- Fixed page param in by_queue_tier_division in `league_exp.py` to default to 1.
+
 ### Removed
 
 - Removed PH and TH enums in `region.py` in favour of SG as they all route to the sg2 server

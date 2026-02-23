@@ -17,7 +17,7 @@ class LeagueExpEndpoint:
         queue: Queue,
         tier: Tier,
         division: Division,
-        page: int | None = None,
+        page: int = 1,
     ) -> list[dict[Any, Any]]:
         """# Get all the league entries
 

@@ -55,7 +55,7 @@ class ChampionMasteryEndpoint:
         return data
 
     async def masteries_by_puuid_top(
-        self, region: Region, puuid: str, count: int | None = None
+        self, region: Region, puuid: str, count: int = 3
     ) -> list[dict[Any, Any]]:
         """# Get specified number of top champion mastery entries sorted by number of champion points descending
 
@@ -65,7 +65,7 @@ class ChampionMasteryEndpoint:
         **Args:**  
             `region (Region)` [Region](/pyke/pyke.html#Region) to execute against.  
             `puuid (str)` Encrypted PUUID. Exact length of 78 characters.  
-            `count (int | None, optional)` Number of entries to retrieve. defaults to 3.  
+            `count (int, optional)` Number of entries to retrieve. defaults to 3.  
 
         **Returns:**  
             `list[dict[Any, Any]]`
