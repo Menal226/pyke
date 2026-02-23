@@ -66,7 +66,7 @@ except exceptions.InternalServerError as e:
 ## Resources
 
 - **[API Documentation](https://diodemusic.github.io/pyke/pyke.html)**
-- **[Examples Directory](https://github.com/diodemusic/pyke/tree/master/examples)**
+- **[Examples Directory](https://github.com/diodemusic/pyke/tree/main/examples)**
 - **[PyPI Package](https://pypi.org/project/pyke-lol/)**
 - **[GitHub Repository](https://github.com/diodemusic/pyke)**
 
