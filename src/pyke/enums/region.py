@@ -16,8 +16,6 @@ class Region(Enum):
     OCE = "oc1"
     RU = "ru"
     TR = "tr1"
-    PH = "sg2"
-    SG = "sg2"
-    TH = "sg2"
+    SG = "sg2"  # covers PH, SG, and TH — all route to the sg2 server
     TW = "tw2"
     VN = "vn2"
