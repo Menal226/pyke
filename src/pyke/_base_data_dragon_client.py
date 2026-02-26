@@ -33,10 +33,13 @@ class _BaseDataDragonClient:
 
     def _get_latest_version(self) -> str:
         with httpx.Client(timeout=self.timeout) as client:
-            response = client.get(
-                "https://ddragon.leagueoflegends.com/api/versions.json"
-            )
-            return response.json()[0]
+            try:
+                response = client.get(
+                    "https://ddragon.leagueoflegends.com/api/versions.json"
+                )
+                return response.json()[0]
+            except Exception as e:
+                raise Exception(f"Error getting latest ddragon version: {e}")
 
     def _response_json(self, response: Response) -> Any:
         try:

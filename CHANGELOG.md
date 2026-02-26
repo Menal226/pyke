@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Add **all** declaration in `_base_client.py` and `_base_data_dragon_client.py`
 - Added `print_url` option to DataDragon class. defaults to False
 - Added 429 error rate limit exceeded handling in `_base_data_dragon_client.py`
+- Added error handling to `_get_latest_version` in `_base_data_dragon_client.py`
 
 ### Changed
 
