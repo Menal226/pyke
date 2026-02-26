@@ -1,6 +1,5 @@
 from pyke import Continent, Division, Level, Queue, Region, Tier, Type
 
-
 # --- Continent ---
 
 
