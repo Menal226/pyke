@@ -46,7 +46,7 @@ class _BaseApiClient:
 
     async def _get(self, url: str, params: dict[Any, Any] | None = None) -> Any:
         if self.print_url:
-            print(f"URL: {url}")
+            print(url)
 
         headers = {"X-Riot-Token": self._api_key}
 
