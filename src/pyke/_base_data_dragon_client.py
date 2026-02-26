@@ -8,8 +8,10 @@ from httpx import Response
 
 from . import exceptions
 
+__all__ = ["_BaseDataDragonClient"]
 
-class _BaseDataDragonClient:  # pyright: ignore[reportUnusedClass]
+
+class _BaseDataDragonClient:
     DATA_DRAGON_BASE = "https://ddragon.leagueoflegends.com"
 
     def __init__(self, timeout: int) -> None:

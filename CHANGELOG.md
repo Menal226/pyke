@@ -43,6 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed count param in masteries_by_puuid_top in `champion_mastery.py` to default to 3
 - Fixed page param in by_queue_tier_division in `league_exp.py` to default to 1
 - Fixed `RequestError` incorrectly mapped to `RequestTimeout` in `_base_client.py`
+- Added Add **all** declaration in `_base_client.py` and `_base_data_dragon_client.py`
 
 ### Removed
 

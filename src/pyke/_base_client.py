@@ -10,8 +10,10 @@ from . import exceptions
 from .enums.continent import Continent
 from .enums.region import Region
 
+__all__ = ["_BaseApiClient"]
 
-class _BaseApiClient:  # pyright: ignore[reportUnusedClass]
+
+class _BaseApiClient:
     CONTINENT_BASE = "https://{continent}.api.riotgames.com"
     REGION_BASE = "https://{region}.api.riotgames.com"
 
