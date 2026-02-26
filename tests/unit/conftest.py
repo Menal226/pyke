@@ -14,7 +14,9 @@ async def pyke_client() -> AsyncGenerator[Pyke, None]:
 
 
 @pytest_asyncio.fixture
-async def ddragon_client(respx_mock: respx.MockRouter) -> AsyncGenerator[DataDragon, None]:
+async def ddragon_client(
+    respx_mock: respx.MockRouter,
+) -> AsyncGenerator[DataDragon, None]:
     respx_mock.get("https://ddragon.leagueoflegends.com/api/versions.json").mock(
         return_value=Response(200, json=["16.3.1", "16.2.1"])
     )

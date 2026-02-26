@@ -87,9 +87,7 @@ async def test_404_raises_data_not_found(pyke_client: Pyke, respx_mock: MockRout
 
 
 @pytest.mark.asyncio
-async def test_405_raises_method_not_allowed(
-    pyke_client: Pyke, respx_mock: MockRouter
-):
+async def test_405_raises_method_not_allowed(pyke_client: Pyke, respx_mock: MockRouter):
     respx_mock.get(BASE).mock(return_value=Response(405))
     with pytest.raises(exceptions.MethodNotAllowed):
         await pyke_client.lol_status.platform_data(Region.EUW)

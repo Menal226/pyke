@@ -36,9 +36,9 @@ async def test_grandmaster_leagues_by_queue(pyke_client: Pyke, respx_mock: MockR
 
 @pytest.mark.asyncio
 async def test_master_leagues_by_queue(pyke_client: Pyke, respx_mock: MockRouter):
-    respx_mock.get(
-        f"{BASE}/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5"
-    ).mock(return_value=Response(200, json={"tier": "MASTER", "entries": []}))
+    respx_mock.get(f"{BASE}/lol/league/v4/masterleagues/by-queue/RANKED_SOLO_5x5").mock(
+        return_value=Response(200, json={"tier": "MASTER", "entries": []})
+    )
 
     result = await pyke_client.league.master_leagues_by_queue(
         Region.EUW, Queue.SOLO_DUO
@@ -49,9 +49,11 @@ async def test_master_leagues_by_queue(pyke_client: Pyke, respx_mock: MockRouter
 
 @pytest.mark.asyncio
 async def test_by_puuid(pyke_client: Pyke, respx_mock: MockRouter):
-    respx_mock.get(
-        f"{BASE}/lol/league/v4/entries/by-puuid/{PUUID}"
-    ).mock(return_value=Response(200, json=[{"tier": "GOLD", "queueType": "RANKED_SOLO_5x5"}]))
+    respx_mock.get(f"{BASE}/lol/league/v4/entries/by-puuid/{PUUID}").mock(
+        return_value=Response(
+            200, json=[{"tier": "GOLD", "queueType": "RANKED_SOLO_5x5"}]
+        )
+    )
 
     result = await pyke_client.league.by_puuid(Region.EUW, PUUID)
 
@@ -61,9 +63,9 @@ async def test_by_puuid(pyke_client: Pyke, respx_mock: MockRouter):
 
 @pytest.mark.asyncio
 async def test_by_queue_tier_division(pyke_client: Pyke, respx_mock: MockRouter):
-    respx_mock.get(
-        f"{BASE}/lol/league/v4/entries/RANKED_SOLO_5x5/GOLD/II"
-    ).mock(return_value=Response(200, json=[{"summonerName": "Test", "tier": "GOLD"}]))
+    respx_mock.get(f"{BASE}/lol/league/v4/entries/RANKED_SOLO_5x5/GOLD/II").mock(
+        return_value=Response(200, json=[{"summonerName": "Test", "tier": "GOLD"}])
+    )
 
     result = await pyke_client.league.by_queue_tier_division(
         Region.EUW, Queue.SOLO_DUO, Tier.GOLD, Division.II
@@ -76,9 +78,9 @@ async def test_by_queue_tier_division(pyke_client: Pyke, respx_mock: MockRouter)
 @pytest.mark.asyncio
 async def test_by_league_id(pyke_client: Pyke, respx_mock: MockRouter):
     league_id = "some-league-id"
-    respx_mock.get(
-        f"{BASE}/lol/league/v4/leagues/{league_id}"
-    ).mock(return_value=Response(200, json={"leagueId": league_id, "entries": []}))
+    respx_mock.get(f"{BASE}/lol/league/v4/leagues/{league_id}").mock(
+        return_value=Response(200, json={"leagueId": league_id, "entries": []})
+    )
 
     result = await pyke_client.league.by_league_id(Region.EUW, league_id)
 
@@ -94,16 +96,14 @@ async def test_challenger_leagues_not_found_raises(
     ).mock(return_value=Response(404))
 
     with pytest.raises(exceptions.DataNotFound):
-        await pyke_client.league.challenger_leagues_by_queue(
-            Region.EUW, Queue.SOLO_DUO
-        )
+        await pyke_client.league.challenger_leagues_by_queue(Region.EUW, Queue.SOLO_DUO)
 
 
 @pytest.mark.asyncio
 async def test_by_puuid_rate_limit_raises(pyke_client: Pyke, respx_mock: MockRouter):
-    respx_mock.get(
-        f"{BASE}/lol/league/v4/entries/by-puuid/{PUUID}"
-    ).mock(return_value=Response(429))
+    respx_mock.get(f"{BASE}/lol/league/v4/entries/by-puuid/{PUUID}").mock(
+        return_value=Response(429)
+    )
 
     with pytest.raises(exceptions.RateLimitExceeded):
         await pyke_client.league.by_puuid(Region.EUW, PUUID)

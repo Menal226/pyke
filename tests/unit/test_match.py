@@ -43,9 +43,7 @@ async def test_match_ids_by_puuid_with_type(pyke_client: Pyke, respx_mock: MockR
 
 
 @pytest.mark.asyncio
-async def test_match_ids_by_puuid_with_count(
-    pyke_client: Pyke, respx_mock: MockRouter
-):
+async def test_match_ids_by_puuid_with_count(pyke_client: Pyke, respx_mock: MockRouter):
     respx_mock.get(f"{BASE}/matches/by-puuid/{PUUID}/ids").mock(
         return_value=Response(200, json=["EUW1_1111111111", "EUW1_2222222222"])
     )

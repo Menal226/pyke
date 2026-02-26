@@ -31,9 +31,7 @@ async def test_platform_data(pyke_client: Pyke, respx_mock: MockRouter):
 
 @pytest.mark.asyncio
 async def test_platform_data_na(pyke_client: Pyke, respx_mock: MockRouter):
-    respx_mock.get(
-        "https://na1.api.riotgames.com/lol/status/v4/platform-data"
-    ).mock(
+    respx_mock.get("https://na1.api.riotgames.com/lol/status/v4/platform-data").mock(
         return_value=Response(200, json={"id": "NA1", "name": "North America"})
     )
 

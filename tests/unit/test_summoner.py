@@ -52,11 +52,7 @@ async def test_by_puuid_forbidden_raises(pyke_client: Pyke, respx_mock: MockRout
 async def test_by_puuid_kr_region(pyke_client: Pyke, respx_mock: MockRouter):
     respx_mock.get(
         f"https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{PUUID}"
-    ).mock(
-        return_value=Response(
-            200, json={"puuid": PUUID, "summonerLevel": 500}
-        )
-    )
+    ).mock(return_value=Response(200, json={"puuid": PUUID, "summonerLevel": 500}))
 
     result = await pyke_client.summoner.by_puuid(Region.KR, PUUID)
 

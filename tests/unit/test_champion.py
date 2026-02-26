@@ -37,9 +37,7 @@ async def test_rotations_forbidden_raises(pyke_client: Pyke, respx_mock: MockRou
 
 
 @pytest.mark.asyncio
-async def test_rotations_unauthorized_raises(
-    pyke_client: Pyke, respx_mock: MockRouter
-):
+async def test_rotations_unauthorized_raises(pyke_client: Pyke, respx_mock: MockRouter):
     respx_mock.get(f"{BASE}/lol/platform/v3/champion-rotations").mock(
         return_value=Response(401)
     )

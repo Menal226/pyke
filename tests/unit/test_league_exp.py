@@ -9,9 +9,7 @@ BASE = "https://euw1.api.riotgames.com/lol/league-exp/v4"
 
 @pytest.mark.asyncio
 async def test_by_queue_tier_division(pyke_client: Pyke, respx_mock: MockRouter):
-    respx_mock.get(
-        f"{BASE}/entries/RANKED_SOLO_5x5/GOLD/II"
-    ).mock(
+    respx_mock.get(f"{BASE}/entries/RANKED_SOLO_5x5/GOLD/II").mock(
         return_value=Response(
             200,
             json=[{"summonerName": "TestPlayer", "tier": "GOLD", "rank": "II"}],
@@ -31,9 +29,7 @@ async def test_by_queue_tier_division(pyke_client: Pyke, respx_mock: MockRouter)
 async def test_by_queue_tier_division_with_page(
     pyke_client: Pyke, respx_mock: MockRouter
 ):
-    respx_mock.get(
-        f"{BASE}/entries/RANKED_SOLO_5x5/GOLD/II"
-    ).mock(
+    respx_mock.get(f"{BASE}/entries/RANKED_SOLO_5x5/GOLD/II").mock(
         return_value=Response(
             200, json=[{"summonerName": "TestPlayer", "tier": "GOLD"}]
         )
@@ -48,9 +44,7 @@ async def test_by_queue_tier_division_with_page(
 
 @pytest.mark.asyncio
 async def test_by_queue_tier_division_flex(pyke_client: Pyke, respx_mock: MockRouter):
-    respx_mock.get(
-        f"{BASE}/entries/RANKED_FLEX_SR/PLATINUM/I"
-    ).mock(
+    respx_mock.get(f"{BASE}/entries/RANKED_FLEX_SR/PLATINUM/I").mock(
         return_value=Response(
             200, json=[{"summonerName": "TestPlayer", "tier": "PLATINUM"}]
         )
@@ -65,9 +59,9 @@ async def test_by_queue_tier_division_flex(pyke_client: Pyke, respx_mock: MockRo
 
 @pytest.mark.asyncio
 async def test_not_found_raises(pyke_client: Pyke, respx_mock: MockRouter):
-    respx_mock.get(
-        f"{BASE}/entries/RANKED_SOLO_5x5/GOLD/II"
-    ).mock(return_value=Response(404))
+    respx_mock.get(f"{BASE}/entries/RANKED_SOLO_5x5/GOLD/II").mock(
+        return_value=Response(404)
+    )
 
     with pytest.raises(exceptions.DataNotFound):
         await pyke_client.league_exp.by_queue_tier_division(

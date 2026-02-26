@@ -39,9 +39,7 @@ async def test_percentiles(pyke_client: Pyke, respx_mock: MockRouter):
 @pytest.mark.asyncio
 async def test_config_by_challenge_id(pyke_client: Pyke, respx_mock: MockRouter):
     respx_mock.get(f"{BASE}/challenges/{CHALLENGE_ID}/config").mock(
-        return_value=Response(
-            200, json={"id": CHALLENGE_ID, "state": "ENABLED"}
-        )
+        return_value=Response(200, json={"id": CHALLENGE_ID, "state": "ENABLED"})
     )
 
     result = await pyke_client.lol_challenges.config_by_challenge_id(
@@ -71,9 +69,7 @@ async def test_leaderboards_by_level(pyke_client: Pyke, respx_mock: MockRouter):
 
 
 @pytest.mark.asyncio
-async def test_percentiles_by_challenge_id(
-    pyke_client: Pyke, respx_mock: MockRouter
-):
+async def test_percentiles_by_challenge_id(pyke_client: Pyke, respx_mock: MockRouter):
     respx_mock.get(f"{BASE}/challenges/{CHALLENGE_ID}/percentiles").mock(
         return_value=Response(200, json={"GOLD": 0.15, "PLATINUM": 0.05})
     )
