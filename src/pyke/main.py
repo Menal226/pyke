@@ -40,7 +40,6 @@ class Pyke:
         `api_key (str | None)` Your Riot API key.  
         `timeout (int, optional)` Request timeout in seconds. Defaults to 60.  
         `print_url (bool, optional)` Print endpoint URL. Defualts to False.  
-        `print_rate_limit (bool, optional)` Print rate limit usage. Defaults to False.
     """  # fmt: skip
 
     def __init__(
@@ -48,9 +47,8 @@ class Pyke:
         api_key: str | None,
         timeout: int = 60,
         print_url: bool = False,
-        print_rate_limit: bool = False,
     ) -> None:
-        self._client = _BaseApiClient(api_key, timeout, print_url, print_rate_limit)
+        self._client = _BaseApiClient(api_key, timeout, print_url)
 
         self.account = AccountEndpoint(self._client)
         self.champion_mastery = ChampionMasteryEndpoint(self._client)
@@ -75,7 +73,7 @@ class Pyke:
 
 
 class DataDragon:
-    def __init__(self, timeout: int = 10) -> None:
+    def __init__(self, timeout: int = 60) -> None:
         self._client = _BaseDataDragonClient(timeout)
 
         self.spellbuffs = SpellbuffsData(self._client)

@@ -17,16 +17,13 @@ class _BaseApiClient:
     CONTINENT_BASE = "https://{continent}.api.riotgames.com"
     REGION_BASE = "https://{region}.api.riotgames.com"
 
-    def __init__(
-        self, api_key: str | None, timeout: int, print_url: bool, print_rate_limit: bool
-    ) -> None:
+    def __init__(self, api_key: str | None, timeout: int, print_url: bool) -> None:
         if api_key is None:
             raise ValueError("API key is required, please pass a valid Riot API key.")
 
         self._api_key = api_key
         self.timeout = timeout
         self.print_url = print_url
-        self.print_rate_limit = print_rate_limit
         self.client = httpx.AsyncClient(timeout=httpx.Timeout(self.timeout))
         self._status_code_registry = {
             400: lambda: exceptions.BadRequest("Bad request", 400),
@@ -41,38 +38,6 @@ class _BaseApiClient:
             504: lambda: exceptions.GatewayTimeout("Gateway timeout", 504),
         }
 
-    def _get_count(self, response: Response) -> int:
-        header_value = response.headers.get("X-App-Rate-Limit-Count")
-
-        if not header_value:
-            return 0
-
-        parts = header_value.split(":")
-
-        if len(parts) < 1 or not parts[0]:
-            return 0
-
-        try:
-            return int(parts[0])
-        except ValueError:
-            return 0
-
-    def _get_limit(self, response: Response) -> int:
-        header_value = response.headers.get("X-App-Rate-Limit")
-
-        if not header_value:
-            return 100
-
-        parts = header_value.split(":")
-
-        if len(parts) < 1 or not parts[0]:
-            return 100
-
-        try:
-            return int(parts[0])
-        except ValueError:
-            return 100
-
     def _response_json(self, response: Response) -> Any:
         try:
             return response.json()
@@ -83,7 +48,7 @@ class _BaseApiClient:
 
     async def _get(self, url: str, params: dict[Any, Any] | None = None) -> Any:
         if self.print_url:
-            print(f"URL:        {url}")
+            print(f"URL: {url}")
 
         headers = {"X-Riot-Token": self._api_key}
 
@@ -94,24 +59,19 @@ class _BaseApiClient:
                 f"Request timed out after {self.timeout} seconds", 408
             )
 
-        if self.print_rate_limit:
-            self.count = self._get_count(response)
-            self.limit = self._get_limit(response)
-            print(f"Rate limit: ({self.count}/{self.limit})")
-
-        code = response.status_code
-
-        if code == 200:
+        if response.status_code == 200:
             return self._response_json(response)
-        elif code == 429:
-            raise exceptions.RateLimitExceeded("Rate limit exceeded", code)
+        elif response.status_code == 429:
+            raise exceptions.RateLimitExceeded(
+                "Rate limit exceeded", response.status_code
+            )
 
-        exc_factory = self._status_code_registry.get(code)
+        exc_factory = self._status_code_registry.get(response.status_code)
 
         if exc_factory:
             raise exc_factory()
         else:
-            raise exceptions.UnknownError("Unexpected response", code)
+            raise exceptions.UnknownError("Unexpected response", response.status_code)
 
     async def _continent_request(
         self, continent: Continent, path: str, params: dict[Any, Any] | None = None
