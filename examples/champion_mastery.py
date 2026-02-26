@@ -7,11 +7,13 @@ from pyke import Continent, DataDragon, Pyke, Region
 
 load_dotenv()
 API_KEY = os.getenv("RIOT_API_KEY")
-ddragon = DataDragon()
 
 
 async def main() -> None:
-    async with Pyke(API_KEY) as api:
+    async with (
+        Pyke(API_KEY, print_url=True) as api,
+        DataDragon(print_url=True) as ddragon,
+    ):
         # Let's get my puuid
         account = await api.account.by_riot_id(Continent.EUROPE, "saves", "000")
 
