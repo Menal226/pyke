@@ -41,7 +41,7 @@ class Pyke:
     **Args:**  
         `api_key (str | None)` Your Riot API key.  
         `timeout (int, optional)` Request timeout in seconds. Defaults to 60.  
-        `print_url (bool, optional)` Print endpoint URL. Defualts to False.  
+        `print_url (bool, optional)` Print endpoint URL. Defaults to False.  
     """  # fmt: skip
 
     def __init__(
