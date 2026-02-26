@@ -27,16 +27,16 @@ class _BaseApiClient:  # pyright: ignore[reportUnusedClass]
         self.print_rate_limit = print_rate_limit
         self.client = httpx.AsyncClient(timeout=httpx.Timeout(self.timeout))
         self._status_code_registry = {
-            400: exceptions.BadRequest("Bad request", 400),
-            401: exceptions.Unauthorized("Unauthorized", 401),
-            403: exceptions.Forbidden("Forbidden", 403),
-            404: exceptions.DataNotFound("Data not found", 404),
-            405: exceptions.MethodNotAllowed("Method not allowed", 405),
-            415: exceptions.UnsupportedMediaType("Unsupported media type", 415),
-            500: exceptions.InternalServerError("Internal server error", 500),
-            502: exceptions.BadGateway("Bad gateway", 502),
-            503: exceptions.ServiceUnavailable("Service unavailable", 503),
-            504: exceptions.GatewayTimeout("Gateway timeout", 504),
+            400: lambda: exceptions.BadRequest("Bad request", 400),
+            401: lambda: exceptions.Unauthorized("Unauthorized", 401),
+            403: lambda: exceptions.Forbidden("Forbidden", 403),
+            404: lambda: exceptions.DataNotFound("Data not found", 404),
+            405: lambda: exceptions.MethodNotAllowed("Method not allowed", 405),
+            415: lambda: exceptions.UnsupportedMediaType("Unsupported media type", 415),
+            500: lambda: exceptions.InternalServerError("Internal server error", 500),
+            502: lambda: exceptions.BadGateway("Bad gateway", 502),
+            503: lambda: exceptions.ServiceUnavailable("Service unavailable", 503),
+            504: lambda: exceptions.GatewayTimeout("Gateway timeout", 504),
         }
 
     def _get_count(self, response: Response) -> int:
@@ -104,12 +104,12 @@ class _BaseApiClient:  # pyright: ignore[reportUnusedClass]
         elif code == 429:
             raise exceptions.RateLimitExceeded("Rate limit exceeded", code)
 
-        raise self._status_code_registry.get(
-            code,
-            exceptions.UnknownError(
-                "Unexpected response, something has gone terribly wrong", code
-            ),
-        )
+        exc_factory = self._status_code_registry.get(code)
+
+        if exc_factory:
+            raise exc_factory()
+        else:
+            raise exceptions.UnknownError("Unexpected response", code)
 
     async def _continent_request(
         self, continent: Continent, path: str, params: dict[Any, Any] | None = None
