@@ -30,6 +30,7 @@ class _BaseApiClient:
             404: lambda: exceptions.DataNotFound("Data not found", 404),
             405: lambda: exceptions.MethodNotAllowed("Method not allowed", 405),
             415: lambda: exceptions.UnsupportedMediaType("Unsupported media type", 415),
+            429: lambda: exceptions.RateLimitExceeded("Rate limit exceeded", 429),
             500: lambda: exceptions.InternalServerError("Internal server error", 500),
             502: lambda: exceptions.BadGateway("Bad gateway", 502),
             503: lambda: exceptions.ServiceUnavailable("Service unavailable", 503),
@@ -59,10 +60,6 @@ class _BaseApiClient:
 
         if response.status_code == 200:
             return self._response_json(response)
-        elif response.status_code == 429:
-            raise exceptions.RateLimitExceeded(
-                "Rate limit exceeded", response.status_code
-            )
 
         exc_factory = self._status_code_registry.get(response.status_code)
 
