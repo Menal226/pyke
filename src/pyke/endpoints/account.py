@@ -1,6 +1,6 @@
 from typing import Any
 
-from pyke import Continent
+from ..enums.continent import Continent
 
 from .._base_client import _BaseApiClient
 

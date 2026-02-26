@@ -1,6 +1,7 @@
 from typing import Any
 
-from pyke import Level, Region
+from ..enums.level import Level
+from ..enums.region import Region
 
 from .._base_client import _BaseApiClient
 

@@ -1,8 +1,7 @@
-from __future__ import annotations
-
 from typing import Any
 
-from pyke import Continent, Type
+from ..enums.continent import Continent
+from ..enums.type import Type
 
 from .. import exceptions
 from .._base_client import _BaseApiClient

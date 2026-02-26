@@ -27,8 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added unit tests
 - Added context manager support in `main.py`
-- Documented sg2 routing in `region.py`
+- Added comments explaining sg2 routing in `region.py`
 - Added types to **axeit** in `main.py`
+- Added Add **all** declaration in `_base_client.py` and `_base_data_dragon_client.py`
 
 ### Changed
 
@@ -36,7 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed all DataDragon methods to async
 - Changed `print_url` and `print_rate_limit` to default to False in `main.py`
 - Changed examples link to main instead of master in `README.md`
-- Updated `cdns.py` generator to detect dragontail version from local directory instead of DataDragon instance, and validate against latest API version before running
+- Changed `cdns.py` generator to detect dragontail version from local directory instead of DataDragon instance, and validate against latest API version before running
+- Changed to relative imports in all endpoints/ files
 
 ### Fixed
 
@@ -44,7 +46,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed count param in masteries_by_puuid_top in `champion_mastery.py` to default to 3
 - Fixed page param in by_queue_tier_division in `league_exp.py` to default to 1
 - Fixed `RequestError` incorrectly mapped to `RequestTimeout` in `_base_client.py`
-- Added Add **all** declaration in `_base_client.py` and `_base_data_dragon_client.py`
 
 ### Removed
 
@@ -52,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed API key validation in `_base_client.py`
 - Removed `cdn_tests.py` generator
 - Removed rate limit tracking
+- Removed `from __future__ import annotations` from all files except `main.py`
 
 ### Security
 

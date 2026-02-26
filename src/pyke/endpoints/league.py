@@ -1,6 +1,9 @@
 from typing import Any
 
-from pyke import Division, Queue, Region, Tier
+from ..enums.division import Division
+from ..enums.queue import Queue
+from ..enums.region import Region
+from ..enums.tier import Tier
 
 from .._base_client import _BaseApiClient
 

@@ -1,8 +1,6 @@
-from __future__ import annotations
-
 from typing import Any
 
-from pyke import Region
+from ..enums.region import Region
 
 from .._base_client import _BaseApiClient
 
