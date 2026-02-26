@@ -1,8 +1,7 @@
 from typing import Any
 
-from ..enums.region import Region
-
 from .._base_client import _BaseApiClient
+from ..enums.region import Region
 
 
 class SummonerEndpoint:
@@ -10,7 +9,7 @@ class SummonerEndpoint:
         self._client = client
 
     async def by_puuid(self, region: Region, puuid: str) -> dict[Any, Any]:
-        """Get a summoner by PUUID.
+        """# Get a summoner by PUUID.
 
         **Example:**  
             `api.summoner.by_puuid(Region.EUW, "some puuid")`
