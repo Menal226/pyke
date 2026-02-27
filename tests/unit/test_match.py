@@ -80,6 +80,27 @@ async def test_match_ids_non_string_items_raises(
 
 
 @pytest.mark.asyncio
+async def test_replays_by_puuid(pyke_client: Pyke, respx_mock: MockRouter):
+    respx_mock.get(f"{BASE}/matches/by-puuid/{PUUID}/replays").mock(
+        return_value=Response(
+            200,
+            json={
+                "total": 5,
+                "matchFileURLs": [
+                    "REPLAY_URL",
+                    "REPLAY_URL",
+                ],
+            },
+        )
+    )
+
+    result = await pyke_client.match.replays_by_puuid(Continent.EUROPE, PUUID)
+
+    assert result["total"] == 5
+    assert result["matchFileURLs"][0] == "REPLAY_URL"
+
+
+@pytest.mark.asyncio
 async def test_by_match_id(pyke_client: Pyke, respx_mock: MockRouter):
     respx_mock.get(f"{BASE}/matches/{MATCH_ID}").mock(
         return_value=Response(

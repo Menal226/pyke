@@ -73,6 +73,27 @@ class MatchEndpoint:
 
         return data  # pyright: ignore[reportUnknownVariableType]
 
+    async def replays_by_puuid(
+        self, continent: Continent, puuid: str
+    ) -> dict[Any, Any]:
+        """# Get player replays
+
+        **Example:**  
+            `replays = await api.match.replays_by_puuid(Continent.EUROPE, "some puuid")`
+
+        **Args:**  
+            `continent (Continent)` [Continent](/pyke/pyke.html#Continent) to execute against.  
+            `puuid (str)` Encrypted PUUID. Exact length of 78 characters.  
+
+        **Returns:**  
+            `dict[Any, Any]`
+        """  # fmt: skip
+
+        path = f"/lol/match/v5/matches/by-puuid/{puuid}/replays"
+        data = await self._client._continent_request(continent=continent, path=path)
+
+        return data
+
     async def by_match_id(self, continent: Continent, match_id: str) -> dict[Any, Any]:
         """# Get a match by match id
 
