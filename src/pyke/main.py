@@ -36,7 +36,7 @@ class Pyke:
     """# Main entrypoint for interacting with the Riot API
 
     **Example:**  
-        `api = Pyke("RGAPI-...")`
+        `async with Pyke("RGAPI-...") as api:`
 
     **Args:**  
         `api_key (str | None)` Your Riot API key.  
