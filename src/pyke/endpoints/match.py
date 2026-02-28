@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, cast
 
 from .. import exceptions
 from .._base_riot_client import _BaseRiotClient
@@ -63,15 +63,14 @@ class MatchEndpoint:
                 error_code=404,
             )
 
-        if not all(
-            isinstance(item, str)
-            for item in data  # pyright: ignore[reportUnknownVariableType]
-        ):
+        data = cast(list[Any], data)
+
+        if not all(isinstance(item, str) for item in data):
             raise exceptions.DataNotFound(
                 message="Match ID list contains non-string values", error_code=404
             )
 
-        return data  # pyright: ignore[reportUnknownVariableType]
+        return cast(list[str], data)
 
     async def replays_by_puuid(
         self, continent: Continent, puuid: str
