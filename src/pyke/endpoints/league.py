@@ -1,4 +1,5 @@
-from typing import Any
+from ..models.leagueEntryDTO import LeagueEntryDTO
+from ..models.leagueListDTO import LeagueListDTO
 
 from .._base_riot_client import _BaseRiotClient
 from ..enums.division import Division
@@ -15,7 +16,7 @@ class LeagueEndpoint:
         self,
         region: Region,
         queue: Queue,
-    ) -> dict[Any, Any]:
+    ) -> LeagueEntryDTO:
         """# Get the challenger league for given queue
 
         **Example:**  
@@ -26,15 +27,15 @@ class LeagueEndpoint:
             `queue (Queue)` Ranked [Queue](/pyke/pyke.html#Queue) type.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `LeagueEntryDTO`
         """  # fmt: skip
 
         path = f"/lol/league/v4/challengerleagues/by-queue/{queue.value}"
         data = await self._client._request(region=region, path=path)
 
-        return data
+        return LeagueEntryDTO.from_dict(data)
 
-    async def by_puuid(self, region: Region, puuid: str) -> list[dict[Any, Any]]:
+    async def by_puuid(self, region: Region, puuid: str) -> list[LeagueEntryDTO]:
         """# Get league entries in all queues for a given puuid
 
         **Example:**  
@@ -45,13 +46,13 @@ class LeagueEndpoint:
             `puuid (str)` Encrypted PUUID. Exact length of 78 characters.  
 
         **Returns:**  
-            `list[dict[Any, Any]]`
+            `list[LeagueEntryDTO]`
         """  # fmt: skip
 
         path = f"/lol/league/v4/entries/by-puuid/{puuid}"
         data = await self._client._request(region=region, path=path)
 
-        return data
+        return [LeagueEntryDTO.from_dict(entry) for entry in data]
 
     async def by_queue_tier_division(
         self,
@@ -60,7 +61,7 @@ class LeagueEndpoint:
         tier: Tier,
         division: Division,
         page: int = 1,
-    ) -> list[dict[Any, Any]]:
+    ) -> list[LeagueEntryDTO]:
         """# Get all the league entries
 
         **Example:**  
@@ -74,20 +75,20 @@ class LeagueEndpoint:
             `page (int, optional)` Starts with page 1. Defaults to 1.  
 
         **Returns:**  
-            `list[dict[Any, Any]]`
+            `list[LeagueEntryDTO]`
         """  # fmt: skip
 
         path = f"/lol/league/v4/entries/{queue.value}/{tier.value}/{division.value}"
         params = {"page": page}
         data = await self._client._request(region=region, path=path, params=params)
 
-        return data
+        return [LeagueEntryDTO.from_dict(entry) for entry in data]
 
     async def grandmaster_leagues_by_queue(
         self,
         region: Region,
         queue: Queue,
-    ) -> dict[Any, Any]:
+    ) -> LeagueListDTO:
         """# Get the grandmaster league for given queue
 
         **Example:**  
@@ -98,15 +99,15 @@ class LeagueEndpoint:
             `queue (Queue)` Ranked [Queue](/pyke/pyke.html#Queue) type.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `LeagueListDTO`
         """  # fmt: skip
 
         path = f"/lol/league/v4/grandmasterleagues/by-queue/{queue.value}"
         data = await self._client._request(region=region, path=path)
 
-        return data
+        return LeagueListDTO.from_dict(data)
 
-    async def by_league_id(self, region: Region, league_id: str) -> dict[Any, Any]:
+    async def by_league_id(self, region: Region, league_id: str) -> LeagueListDTO:
         """# Get league with given ID, including inactive entries
 
         **Example:**  
@@ -117,19 +118,19 @@ class LeagueEndpoint:
             `league_id (str)` League id.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `LeagueListDTO`
         """  # fmt: skip
 
         path = f"/lol/league/v4/leagues/{league_id}"
         data = await self._client._request(region=region, path=path)
 
-        return data
+        return LeagueListDTO.from_dict(data)
 
     async def master_leagues_by_queue(
         self,
         region: Region,
         queue: Queue,
-    ) -> dict[Any, Any]:
+    ) -> LeagueListDTO:
         """# Get the master league for given queue
 
         **Example:**  
@@ -140,10 +141,10 @@ class LeagueEndpoint:
             `queue (Queue)` Ranked [Queue](/pyke/pyke.html#Queue) type.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `LeagueListDTO`
         """  # fmt: skip
 
         path = f"/lol/league/v4/masterleagues/by-queue/{queue.value}"
         data = await self._client._request(region=region, path=path)
 
-        return data
+        return LeagueListDTO.from_dict(data)

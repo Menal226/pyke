@@ -1,4 +1,4 @@
-from typing import Any
+from ..models.leagueEntryDTO import LeagueEntryDTO
 
 from .._base_riot_client import _BaseRiotClient
 from ..enums.division import Division
@@ -18,7 +18,7 @@ class LeagueExpEndpoint:
         tier: Tier,
         division: Division,
         page: int = 1,
-    ) -> list[dict[Any, Any]]:
+    ) -> list[LeagueEntryDTO]:
         """# Get all the league entries
 
         **Example:**  
@@ -32,11 +32,11 @@ class LeagueExpEndpoint:
             `page (int, optional)` Starts with page 1. Defaults to 1.  
 
         **Returns:**  
-            `list[dict[Any, Any]]`
+            `list[LeagueEntryDTO]`
         """  # fmt: skip
 
         path = f"/lol/league-exp/v4/entries/{queue.value}/{tier.value}/{division.value}"
         params = {"page": page}
         data = await self._client._request(region=region, path=path, params=params)
 
-        return data
+        return [LeagueEntryDTO.from_dict(entry) for entry in data]

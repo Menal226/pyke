@@ -1,5 +1,8 @@
 from typing import Any, cast
 
+from pyke.models.framesTimeLineDto import FramesTimeLineDto
+from pyke.models.replayDTO import ReplayDTO
+
 from .. import exceptions
 from .._base_riot_client import _BaseRiotClient
 from ..enums.continent import Continent
@@ -74,7 +77,7 @@ class MatchEndpoint:
 
     async def replays_by_puuid(
         self, continent: Continent, puuid: str
-    ) -> dict[Any, Any]:
+    ) -> ReplayDTO:
         """# Get player replays
 
         **Example:**  
@@ -85,15 +88,15 @@ class MatchEndpoint:
             `puuid (str)` Encrypted PUUID. Exact length of 78 characters.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `ReplayDTO`
         """  # fmt: skip
 
         path = f"/lol/match/v5/matches/by-puuid/{puuid}/replays"
         data = await self._client._request(continent=continent, path=path)
 
-        return data
+        return ReplayDTO.from_dict(data)
 
-    async def by_match_id(self, continent: Continent, match_id: str) -> dict[Any, Any]:
+    async def by_match_id(self, continent: Continent, match_id: str) -> ReplayDTO:
         """# Get a match by match id
 
         **Example:**  
@@ -104,17 +107,17 @@ class MatchEndpoint:
             `match_id (str)` Match id string.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `ReplayDTO`
         """  # fmt: skip
 
         path = f"/lol/match/v5/matches/{match_id}"
         data = await self._client._request(continent=continent, path=path)
 
-        return data
+        return ReplayDTO.from_dict(data)
 
     async def timeline_by_match_id(
         self, continent: Continent, match_id: str
-    ) -> dict[Any, Any]:
+    ) -> FramesTimeLineDto:
         """# Get a match timeline by match id
 
         **Example:**  
@@ -125,10 +128,10 @@ class MatchEndpoint:
             `match_id (str)` Match id string.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `FramesTimeLineDto`
         """  # fmt: skip
 
         path = f"/lol/match/v5/matches/{match_id}/timeline"
         data = await self._client._request(continent=continent, path=path)
 
-        return data
+        return FramesTimeLineDto.from_dict(data)

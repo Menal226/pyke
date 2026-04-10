@@ -1,4 +1,4 @@
-from typing import Any
+from ..models.championMasteryDto import ChampionMasteryDto
 
 from .. import exceptions
 from .._base_riot_client import _BaseRiotClient
@@ -11,7 +11,7 @@ class ChampionMasteryEndpoint:
 
     async def masteries_by_puuid(
         self, region: Region, puuid: str
-    ) -> list[dict[Any, Any]]:
+    ) -> list[ChampionMasteryDto]:
         """# Get all champion mastery entries sorted by number of champion points descending
 
         **Example:**  
@@ -22,17 +22,17 @@ class ChampionMasteryEndpoint:
             `puuid (str)` Encrypted PUUID. Exact length of 78 characters.  
 
         **Returns:**  
-            `list[dict[Any, Any]]`
+            `list[ChampionMasteryDto]`
         """  # fmt: skip
 
         path = f"/lol/champion-mastery/v4/champion-masteries/by-puuid/{puuid}"
         data = await self._client._request(region=region, path=path)
 
-        return data
+        return [ChampionMasteryDto.from_dict(entry) for entry in data]
 
     async def by_puuid_and_champion_id(
         self, region: Region, puuid: str, champion_id: int
-    ) -> dict[Any, Any]:
+    ) -> ChampionMasteryDto:
         """# Get a champion mastery by puuid and champion ID
 
         **Example:**  
@@ -44,17 +44,17 @@ class ChampionMasteryEndpoint:
             `champion_id (int)` Champion ID for this entry.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `ChampionMasteryDto`
         """  # fmt: skip
 
         path = f"/lol/champion-mastery/v4/champion-masteries/by-puuid/{puuid}/by-champion/{champion_id}"
         data = await self._client._request(region=region, path=path)
 
-        return data
+        return ChampionMasteryDto.from_dict(data)
 
     async def masteries_by_puuid_top(
         self, region: Region, puuid: str, count: int = 3
-    ) -> list[dict[Any, Any]]:
+    ) -> list[ChampionMasteryDto]:
         """# Get specified number of top champion mastery entries sorted by number of champion points descending
 
         **Example:**  
@@ -66,14 +66,14 @@ class ChampionMasteryEndpoint:
             `count (int, optional)` Number of entries to retrieve. defaults to 3.  
 
         **Returns:**  
-            `list[dict[Any, Any]]`
+            `list[ChampionMasteryDto]`
         """  # fmt: skip
 
         path = f"/lol/champion-mastery/v4/champion-masteries/by-puuid/{puuid}/top"
         params = {"count": count}
         data = await self._client._request(region=region, path=path, params=params)
 
-        return data
+        return [ChampionMasteryDto.from_dict(entry) for entry in data]
 
     async def score_by_puuid(self, region: Region, puuid: str) -> int:
         """# Get a player's total champion mastery score, which is the sum of individual champion mastery levels

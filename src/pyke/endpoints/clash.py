@@ -1,4 +1,6 @@
-from typing import Any
+from ..models.playerDto import PlayerDto
+from ..models.teamDto import TeamDto
+from ..models.tournamentDto import TournamentDto
 
 from .._base_riot_client import _BaseRiotClient
 from ..enums.region import Region
@@ -8,7 +10,7 @@ class ClashEndpoint:
     def __init__(self, client: _BaseRiotClient):
         self._client = client
 
-    async def by_puuid(self, region: Region, puuid: str) -> list[dict[Any, Any]]:
+    async def by_puuid(self, region: Region, puuid: str) -> list[PlayerDto]:
         """# Get players by puuid
 
         **Example:**  
@@ -19,15 +21,15 @@ class ClashEndpoint:
             `puuid (str)` Encrypted PUUID. Exact length of 78 characters.  
 
         **Returns:**  
-            `list[dict[Any, Any]]`
+            `list[PlayerDto]`
         """  # fmt: skip
 
         path = f"/lol/clash/v1/players/by-puuid/{puuid}"
         data = await self._client._request(region=region, path=path)
 
-        return data
+        return [PlayerDto.from_dict(entry) for entry in data]
 
-    async def by_team_id(self, region: Region, team_id: str) -> dict[Any, Any]:
+    async def by_team_id(self, region: Region, team_id: str) -> TeamDto:
         """# Get team by ID
 
         **Example:**  
@@ -38,15 +40,15 @@ class ClashEndpoint:
             `team_id (str)` Team id of the clash team.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `TeamDto`
         """  # fmt: skip
 
         path = f"/lol/clash/v1/teams/{team_id}"
         data = await self._client._request(region=region, path=path)
 
-        return data
+        return TeamDto.from_dict(data)
 
-    async def tournaments(self, region: Region) -> list[dict[Any, Any]]:
+    async def tournaments(self, region: Region) -> list[TournamentDto]:
         """# Get all active or upcoming tournaments
 
         **Example:**  
@@ -56,17 +58,17 @@ class ClashEndpoint:
             `region (Region)` [Region](/pyke/pyke.html#Region) to execute against.  
 
         **Returns:**  
-            `list[dict[Any, Any]]`
+            `list[TournamentDto]`
         """  # fmt: skip
 
         path = "/lol/clash/v1/tournaments"
         data = await self._client._request(region=region, path=path)
 
-        return data
+        return [TournamentDto.from_dict(entry) for entry in data]
 
     async def tournament_by_team_id(
         self, region: Region, team_id: str
-    ) -> dict[Any, Any]:
+    ) -> TournamentDto:
         """# Get tournament by team ID
 
         **Example:**  
@@ -77,17 +79,17 @@ class ClashEndpoint:
             `team_id (str)` Team id of the clash team.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `TournamentDto`
         """  # fmt: skip
 
         path = f"/lol/clash/v1/tournaments/by-team/{team_id}"
         data = await self._client._request(region=region, path=path)
 
-        return data
+        return TournamentDto.from_dict(data)
 
     async def tournament_by_tournament_id(
         self, region: Region, tournament_id: int
-    ) -> dict[Any, Any]:
+    ) -> TournamentDto:
         """# Get tournament by ID
 
         **Example:**  
@@ -98,10 +100,10 @@ class ClashEndpoint:
             `tournament_id (int)` Tournament id of the clash.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `TournamentDto`
         """  # fmt: skip
 
         path = f"/lol/clash/v1/tournaments/{tournament_id}"
         data = await self._client._request(region=region, path=path)
 
-        return data
+        return TournamentDto.from_dict(data)

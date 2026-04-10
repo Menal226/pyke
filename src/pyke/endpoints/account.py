@@ -1,4 +1,5 @@
-from typing import Any
+from ..models.accountDto import AccountDto
+from ..models.accountRegionDTO import AccountRegionDTO
 
 from .._base_riot_client import _BaseRiotClient
 from ..enums.continent import Continent
@@ -10,7 +11,7 @@ class AccountEndpoint:
     def __init__(self, client: _BaseRiotClient):
         self._client = client
 
-    async def by_puuid(self, continent: Continent, puuid: str) -> dict[Any, Any]:
+    async def by_puuid(self, continent: Continent, puuid: str) -> AccountDto:
         """# Get account by puuid
 
         **Example:**  
@@ -21,17 +22,17 @@ class AccountEndpoint:
             `puuid (str)` Encrypted PUUID. Exact length of 78 characters.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `AccountDto`
         """  # fmt: skip
 
         path = f"/riot/account/v1/accounts/by-puuid/{puuid}"
         data = await self._client._request(continent=continent, path=path)
 
-        return data
+        return AccountDto.from_dict(data)
 
     async def by_riot_id(
         self, continent: Continent, game_name: str, tag_line: str
-    ) -> dict[Any, Any]:
+    ) -> AccountDto:
         """# Get account by riot id
 
         **Example:**  
@@ -43,15 +44,15 @@ class AccountEndpoint:
             `tag_line (str)` Riot id tag line.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `AccountDto`
         """  # fmt: skip
 
         path = f"/riot/account/v1/accounts/by-riot-id/{game_name}/{tag_line}"
         data = await self._client._request(continent=continent, path=path)
 
-        return data
+        return AccountDto.from_dict(data)
 
-    async def region_by_puuid(self, continent: Continent, puuid: str) -> dict[Any, Any]:
+    async def region_by_puuid(self, continent: Continent, puuid: str) -> AccountRegionDTO:
         """# Get active region (lol and tft)
 
         **Example:**  
@@ -62,10 +63,10 @@ class AccountEndpoint:
             `puuid (str)` Encrypted PUUID. Exact length of 78 characters.  
 
         **Returns:**  
-            `dict[Any, Any]`
+            `AccountRegionDTO`
         """  # fmt: skip
 
         path = f"/riot/account/v1/region/by-game/lol/by-puuid/{puuid}"
         data = await self._client._request(continent=continent, path=path)
 
-        return data
+        return AccountRegionDTO.from_dict(data)
