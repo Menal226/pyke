@@ -25,8 +25,8 @@ async def test_masteries_by_puuid(pyke_client: Pyke, respx_mock: MockRouter):
 
     assert isinstance(result, list)
     assert len(result) == 2
-    assert result[0]["championId"] == 29
-    assert result[0]["championLevel"] == 7
+    assert result[0].championId == 29
+    assert result[0].championLevel == 7
 
 
 @pytest.mark.asyncio
@@ -43,8 +43,8 @@ async def test_by_puuid_and_champion_id(pyke_client: Pyke, respx_mock: MockRoute
         Region.EUW, PUUID, 29
     )
 
-    assert result["championId"] == 29
-    assert result["championPoints"] == 500000
+    assert result.championId == 29
+    assert result.championPoints == 500000
 
 
 @pytest.mark.asyncio

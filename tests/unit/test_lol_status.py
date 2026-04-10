@@ -24,9 +24,9 @@ async def test_platform_data(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.lol_status.platform_data(Region.EUW)
 
-    assert result["id"] == "EUW1"
-    assert result["name"] == "EU West"
-    assert isinstance(result["incidents"], list)
+    assert result.id == "EUW1"
+    assert result.name == "EU West"
+    assert isinstance(result.incidents, list)
 
 
 @pytest.mark.asyncio
@@ -37,7 +37,7 @@ async def test_platform_data_na(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.lol_status.platform_data(Region.NA)
 
-    assert result["id"] == "NA1"
+    assert result.id == "NA1"
 
 
 @pytest.mark.asyncio

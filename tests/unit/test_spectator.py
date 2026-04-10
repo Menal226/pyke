@@ -24,8 +24,8 @@ async def test_by_puuid(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.spectator.by_puuid(Region.EUW, PUUID)
 
-    assert result["gameId"] == 1234567890
-    assert result["gameMode"] == "CLASSIC"
+    assert result.gameId == 1234567890
+    assert result.gameMode == "CLASSIC"
 
 
 @pytest.mark.asyncio
@@ -46,4 +46,4 @@ async def test_by_puuid_different_region(pyke_client: Pyke, respx_mock: MockRout
 
     result = await pyke_client.spectator.by_puuid(Region.NA, PUUID)
 
-    assert result["gameMode"] == "ARAM"
+    assert result.gameMode == "ARAM"

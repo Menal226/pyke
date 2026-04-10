@@ -22,8 +22,8 @@ async def test_rotations(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.champion.rotations(Region.EUW)
 
-    assert result["freeChampionIds"] == [1, 2, 3]
-    assert result["freeChampionIdsForNewPlayers"] == [4, 5]
+    assert result.freeChampionIds == [1, 2, 3]
+    assert result.freeChampionIdsForNewPlayers == [4, 5]
 
 
 @pytest.mark.asyncio

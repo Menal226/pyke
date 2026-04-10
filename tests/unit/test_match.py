@@ -3,6 +3,8 @@ from httpx import Response
 from respx import MockRouter
 
 from pyke import Continent, MatchType, Pyke, exceptions
+from pyke.models.matchDto import MatchDto
+from pyke.models.timelineDto import TimelineDto
 
 BASE = "https://europe.api.riotgames.com/lol/match/v5"
 PUUID = "a" * 78
@@ -96,8 +98,8 @@ async def test_replays_by_puuid(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.match.replays_by_puuid(Continent.EUROPE, PUUID)
 
-    assert result["total"] == 5
-    assert result["matchFileURLs"][0] == "REPLAY_URL"
+    assert result.total == 5
+    assert result.matchFileURLs[0] == "REPLAY_URL"
 
 
 @pytest.mark.asyncio
@@ -114,8 +116,9 @@ async def test_by_match_id(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.match.by_match_id(Continent.EUROPE, MATCH_ID)
 
-    assert result["metadata"]["matchId"] == MATCH_ID
-    assert result["info"]["gameMode"] == "CLASSIC"
+    assert isinstance(result, MatchDto)
+    assert result.metadata.matchId == MATCH_ID
+    assert result.info.gameMode == "CLASSIC"
 
 
 @pytest.mark.asyncio
@@ -132,8 +135,9 @@ async def test_timeline_by_match_id(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.match.timeline_by_match_id(Continent.EUROPE, MATCH_ID)
 
-    assert result["metadata"]["matchId"] == MATCH_ID
-    assert "frames" in result["info"]
+    assert isinstance(result, TimelineDto)
+    assert result.metadata.matchId == MATCH_ID
+    assert result.info.frames == []
 
 
 @pytest.mark.asyncio

@@ -18,9 +18,9 @@ async def test_by_puuid(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.account.by_puuid(Continent.EUROPE, PUUID)
 
-    assert result["puuid"] == PUUID
-    assert result["gameName"] == "saves"
-    assert result["tagLine"] == "000"
+    assert result.puuid == PUUID
+    assert result.gameName == "saves"
+    assert result.tagLine == "000"
 
 
 @pytest.mark.asyncio
@@ -33,8 +33,8 @@ async def test_by_riot_id(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.account.by_riot_id(Continent.EUROPE, "saves", "000")
 
-    assert result["gameName"] == "saves"
-    assert result["tagLine"] == "000"
+    assert result.gameName == "saves"
+    assert result.tagLine == "000"
 
 
 @pytest.mark.asyncio
@@ -45,7 +45,7 @@ async def test_region_by_puuid(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.account.region_by_puuid(Continent.EUROPE, PUUID)
 
-    assert result["region"] == "EUW"
+    assert result.region == "EUW"
 
 
 @pytest.mark.asyncio
@@ -81,4 +81,4 @@ async def test_continent_routing(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.account.by_riot_id(Continent.AMERICAS, "player", "NA1")
 
-    assert result["gameName"] == "player"
+    assert result.gameName == "player"

@@ -18,7 +18,7 @@ async def test_challenger_leagues_by_queue(pyke_client: Pyke, respx_mock: MockRo
         Region.EUW, Queue.SOLO_DUO
     )
 
-    assert result["tier"] == "CHALLENGER"
+    assert result.tier == "CHALLENGER"
 
 
 @pytest.mark.asyncio
@@ -31,7 +31,7 @@ async def test_grandmaster_leagues_by_queue(pyke_client: Pyke, respx_mock: MockR
         Region.EUW, Queue.SOLO_DUO
     )
 
-    assert result["tier"] == "GRANDMASTER"
+    assert result.tier == "GRANDMASTER"
 
 
 @pytest.mark.asyncio
@@ -44,7 +44,7 @@ async def test_master_leagues_by_queue(pyke_client: Pyke, respx_mock: MockRouter
         Region.EUW, Queue.SOLO_DUO
     )
 
-    assert result["tier"] == "MASTER"
+    assert result.tier == "MASTER"
 
 
 @pytest.mark.asyncio
@@ -58,7 +58,7 @@ async def test_by_puuid(pyke_client: Pyke, respx_mock: MockRouter):
     result = await pyke_client.league.by_puuid(Region.EUW, PUUID)
 
     assert isinstance(result, list)
-    assert result[0]["tier"] == "GOLD"
+    assert result[0].tier == "GOLD"
 
 
 @pytest.mark.asyncio
@@ -72,7 +72,7 @@ async def test_by_queue_tier_division(pyke_client: Pyke, respx_mock: MockRouter)
     )
 
     assert isinstance(result, list)
-    assert result[0]["tier"] == "GOLD"
+    assert result[0].tier == "GOLD"
 
 
 @pytest.mark.asyncio
@@ -84,7 +84,7 @@ async def test_by_league_id(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.league.by_league_id(Region.EUW, league_id)
 
-    assert result["leagueId"] == league_id
+    assert result.leagueId == league_id
 
 
 @pytest.mark.asyncio
@@ -119,4 +119,4 @@ async def test_flex_queue_value(pyke_client: Pyke, respx_mock: MockRouter):
         Region.EUW, Queue.FLEX
     )
 
-    assert result["tier"] == "CHALLENGER"
+    assert result.tier == "CHALLENGER"

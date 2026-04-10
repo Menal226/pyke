@@ -1,7 +1,8 @@
 from typing import Any, cast
 
-from pyke.models.framesTimeLineDto import FramesTimeLineDto
+from pyke.models.matchDto import MatchDto
 from pyke.models.replayDTO import ReplayDTO
+from pyke.models.timelineDto import TimelineDto
 
 from .. import exceptions
 from .._base_riot_client import _BaseRiotClient
@@ -96,7 +97,7 @@ class MatchEndpoint:
 
         return ReplayDTO.from_dict(data)
 
-    async def by_match_id(self, continent: Continent, match_id: str) -> ReplayDTO:
+    async def by_match_id(self, continent: Continent, match_id: str) -> MatchDto:
         """# Get a match by match id
 
         **Example:**  
@@ -107,17 +108,17 @@ class MatchEndpoint:
             `match_id (str)` Match id string.  
 
         **Returns:**  
-            `ReplayDTO`
+            `MatchDto`
         """  # fmt: skip
 
         path = f"/lol/match/v5/matches/{match_id}"
         data = await self._client._request(continent=continent, path=path)
 
-        return ReplayDTO.from_dict(data)
+        return MatchDto.from_dict(data)
 
     async def timeline_by_match_id(
         self, continent: Continent, match_id: str
-    ) -> FramesTimeLineDto:
+    ) -> TimelineDto:
         """# Get a match timeline by match id
 
         **Example:**  
@@ -128,10 +129,10 @@ class MatchEndpoint:
             `match_id (str)` Match id string.  
 
         **Returns:**  
-            `FramesTimeLineDto`
+            `TimelineDto`
         """  # fmt: skip
 
         path = f"/lol/match/v5/matches/{match_id}/timeline"
         data = await self._client._request(continent=continent, path=path)
 
-        return FramesTimeLineDto.from_dict(data)
+        return TimelineDto.from_dict(data)

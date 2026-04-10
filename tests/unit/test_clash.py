@@ -21,7 +21,7 @@ async def test_by_puuid(pyke_client: Pyke, respx_mock: MockRouter):
     result = await pyke_client.clash.by_puuid(Region.EUW, PUUID)
 
     assert isinstance(result, list)
-    assert result[0]["teamId"] == TEAM_ID
+    assert result[0].teamId == TEAM_ID
 
 
 @pytest.mark.asyncio
@@ -29,14 +29,14 @@ async def test_by_team_id(pyke_client: Pyke, respx_mock: MockRouter):
     respx_mock.get(f"{BASE}/teams/{TEAM_ID}").mock(
         return_value=Response(
             200,
-            json={"id": TEAM_ID, "tournamentId": TOURNAMENT_ID, "name": "Test Team"},
+            json={"teamId": 100, "win": True, "bans": [], "objectives": {}},
         )
     )
 
     result = await pyke_client.clash.by_team_id(Region.EUW, TEAM_ID)
 
-    assert result["id"] == TEAM_ID
-    assert result["name"] == "Test Team"
+    assert result.teamId == 100
+    assert result.win is True
 
 
 @pytest.mark.asyncio
@@ -51,7 +51,7 @@ async def test_tournaments(pyke_client: Pyke, respx_mock: MockRouter):
     result = await pyke_client.clash.tournaments(Region.EUW)
 
     assert isinstance(result, list)
-    assert result[0]["id"] == TOURNAMENT_ID
+    assert result[0].id == TOURNAMENT_ID
 
 
 @pytest.mark.asyncio
@@ -64,7 +64,7 @@ async def test_tournament_by_team_id(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.clash.tournament_by_team_id(Region.EUW, TEAM_ID)
 
-    assert result["id"] == TOURNAMENT_ID
+    assert result.id == TOURNAMENT_ID
 
 
 @pytest.mark.asyncio
@@ -79,7 +79,7 @@ async def test_tournament_by_tournament_id(pyke_client: Pyke, respx_mock: MockRo
         Region.EUW, TOURNAMENT_ID
     )
 
-    assert result["id"] == TOURNAMENT_ID
+    assert result.id == TOURNAMENT_ID
 
 
 @pytest.mark.asyncio

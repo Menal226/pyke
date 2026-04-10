@@ -24,8 +24,8 @@ async def test_by_puuid(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.summoner.by_puuid(Region.EUW, PUUID)
 
-    assert result["puuid"] == PUUID
-    assert result["summonerLevel"] == 300
+    assert result.puuid == PUUID
+    assert result.summonerLevel == 300
 
 
 @pytest.mark.asyncio
@@ -56,4 +56,4 @@ async def test_by_puuid_kr_region(pyke_client: Pyke, respx_mock: MockRouter):
 
     result = await pyke_client.summoner.by_puuid(Region.KR, PUUID)
 
-    assert result["summonerLevel"] == 500
+    assert result.summonerLevel == 500

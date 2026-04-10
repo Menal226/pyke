@@ -21,8 +21,8 @@ async def test_by_queue_tier_division(pyke_client: Pyke, respx_mock: MockRouter)
     )
 
     assert isinstance(result, list)
-    assert result[0]["tier"] == "GOLD"
-    assert result[0]["rank"] == "II"
+    assert result[0].tier == "GOLD"
+    assert result[0].rank == "II"
 
 
 @pytest.mark.asyncio
@@ -54,7 +54,7 @@ async def test_by_queue_tier_division_flex(pyke_client: Pyke, respx_mock: MockRo
         Region.EUW, Queue.FLEX, Tier.PLATINUM, Division.I
     )
 
-    assert result[0]["tier"] == "PLATINUM"
+    assert result[0].tier == "PLATINUM"
 
 
 @pytest.mark.asyncio

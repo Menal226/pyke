@@ -6,6 +6,11 @@ def to_int(value: Any, default: int = 0) -> int:
     if value is None:
         return default
 
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return default
+
 
 def to_float(value: Any, default: float = 0.0) -> float:
     if value is None:
@@ -13,11 +18,6 @@ def to_float(value: Any, default: float = 0.0) -> float:
 
     try:
         return float(value)
-    except (TypeError, ValueError):
-        return default
-
-    try:
-        return int(value)
     except (TypeError, ValueError):
         return default
 
