@@ -24,9 +24,7 @@ class CurrentGameParticipantDto:
     """The ID of the first summoner spell used by this participant"""
     spell2Id: int = 0
     """The ID of the second summoner spell used by this participant"""
-    gameCustomizationObjects: list[GameCustomizationObjectDto] = field(
-        default_factory=lambda: list[GameCustomizationObjectDto]()
-    )
+    gameCustomizationObjects: list[GameCustomizationObjectDto] = field(default_factory=list[GameCustomizationObjectDto])
     """List of Game Customizations"""
 
     @classmethod

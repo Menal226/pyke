@@ -8,7 +8,6 @@ from ._coerce import to_str
 class GameCustomizationObjectDto:
     category: str = ""
     """Category identifier for Game Customization"""
-
     content: str = ""
     """Game Customization content"""
 

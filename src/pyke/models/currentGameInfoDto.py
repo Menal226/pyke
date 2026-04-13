@@ -23,17 +23,13 @@ class CurrentGameInfoDto:
     """The ID of the platform on which the game is being played"""
     gameMode: str = ""
     """The game mode"""
-    bannedChampions: list[BannedChampionDto] = field(
-        default_factory=lambda: list[BannedChampionDto]()
-    )
+    bannedChampions: list[BannedChampionDto] = field(default_factory=list[BannedChampionDto])
     """Banned champion information"""
     gameQueueConfigId: int = 0
     """The queue type (queue types are documented on the Game Constants page)"""
     observers: ObserverDto = field(default_factory=ObserverDto)
     """The observer information"""
-    participants: list[CurrentGameParticipantDto] = field(
-        default_factory=lambda: list[CurrentGameParticipantDto]()
-    )
+    participants: list[CurrentGameParticipantDto] = field(default_factory=list[CurrentGameParticipantDto])
     """The participant information"""
 
     @classmethod

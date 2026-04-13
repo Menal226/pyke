@@ -52,7 +52,7 @@ class ChallengesDto:
     dodgeSkillShotsSmallWindow: int = 0
     doubleAces: int = 0
     dragonTakedowns: int = 0
-    legendaryItemUsed: list[int] = field(default_factory=list)
+    legendaryItemUsed: list[int] = field(default_factory=list[int])
     effectiveHealAndShielding: float = 0.0
     elderDragonKillsWithOpposingSoul: int = 0
     elderDragonMultikills: int = 0

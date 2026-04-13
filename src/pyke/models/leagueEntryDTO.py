@@ -1,6 +1,10 @@
 from dataclasses import dataclass, field
 from typing import Any, Mapping
 
+from ..enums.queue import Queue
+from ..enums.division import Division
+from ..enums.tier import Tier
+
 from ._coerce import to_bool, to_dict, to_int, to_str
 from .miniSeriesDTO import MiniSeriesDTO
 
@@ -9,9 +13,9 @@ class LeagueEntryDTO:
     leagueId: str = ""
     summonerId: str = ""
     puuid: str = ""
-    queueType: str = ""
-    tier: str = ""
-    rank: str = ""
+    queueType: Queue = Queue.FLEX
+    tier: Tier = Tier.IRON
+    rank: Division = Division.I
     leaguePoints: int = 0
     wins: int = 0
     losses: int = 0
@@ -28,9 +32,9 @@ class LeagueEntryDTO:
             leagueId=to_str(payload.get("leagueId")),
             summonerId=to_str(payload.get("summonerId")),
             puuid=to_str(payload.get("puuid")),
-            queueType=to_str(payload.get("queueType")),
-            tier=to_str(payload.get("tier")),
-            rank=to_str(payload.get("rank")),
+            queueType=Queue(payload.get("queueType")),
+            tier=Tier(payload.get("tier")),
+            rank=Division(payload.get("rank")),
             leaguePoints=to_int(payload.get("leaguePoints")),
             wins=to_int(payload.get("wins")),
             losses=to_int(payload.get("losses")),
