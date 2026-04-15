@@ -26,6 +26,7 @@ class CurrentGameParticipantDto:
     """The ID of the second summoner spell used by this participant"""
     gameCustomizationObjects: list[GameCustomizationObjectDto] = field(default_factory=list[GameCustomizationObjectDto])
     """List of Game Customizations"""
+    riotId: str = ""
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "CurrentGameParticipantDto":
@@ -43,4 +44,5 @@ class CurrentGameParticipantDto:
                 GameCustomizationObjectDto.from_dict(item)
                 for item in to_dict_list(payload.get("gameCustomizationObjects"))
             ],
+            riotId=to_str(payload.get("riotId"))
         )
